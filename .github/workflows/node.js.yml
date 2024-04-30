@@ -30,6 +30,8 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
+      - run: echo ${{secrets}}
+
       - name: Create .env file
         run: |
           touch .env
