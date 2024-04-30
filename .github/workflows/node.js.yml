@@ -28,5 +28,5 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npx tsc
-    - run: node dist/index.js
+    - run: node dist/src/index.js
     - run: jest --testTimeout=5000 --testRegex='.spec.ts$'  --detectOpenHandles
