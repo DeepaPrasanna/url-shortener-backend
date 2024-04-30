@@ -2,6 +2,7 @@ import { connect } from "mongoose";
 
 const DATABASE_URL = process.env.DATABASE_URL as string;
 
+console.log(process.env);
 async function run(DB_URL: string) {
   console.log({ DB_URL });
   await connect(DB_URL);
