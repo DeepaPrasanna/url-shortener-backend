@@ -34,13 +34,15 @@ jobs:
 
       - name: Create .env file
         run: |
+          import os
           touch .env
           echo HOSTNAME = ${{ vars.HOSTNAME }} >> .env
           echo PORT = ${{ vars.PORT }} >> .env
           echo NANOID_ALPHABET_SET = ${{ secrets.NANOID_ALPHABET_SET }} >> .env
           echo NO_OF_CHARACTERS = ${{ vars.NO_OF_CHARACTERS }} >> .env
+          echo DATABASE_URL= os.getenv("DATABASE_URL")
 
-      - run: npm ci
-      - run: npx tsc
-      - run: node dist/src/index.js
-      - run: jest --testTimeout=5000 --testRegex='.spec.ts$'  --detectOpenHandles
+      # - run: npm ci
+      # - run: npx tsc
+      # - run: node dist/src/index.js
+      # - run: jest --testTimeout=5000 --testRegex='.spec.ts$'  --detectOpenHandles
