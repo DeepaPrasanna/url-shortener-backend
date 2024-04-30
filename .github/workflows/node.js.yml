@@ -34,13 +34,12 @@ jobs:
 
       - name: Create .env file
         run: |
-          import os
           touch .env
           echo HOSTNAME = ${{ vars.HOSTNAME }} >> .env
           echo PORT = ${{ vars.PORT }} >> .env
           echo NANOID_ALPHABET_SET = ${{ secrets.NANOID_ALPHABET_SET }} >> .env
           echo NO_OF_CHARACTERS = ${{ vars.NO_OF_CHARACTERS }} >> .env
-          echo DATABASE_URL= os.getenv("DATABASE_URL")
+          echo DATABASE_URL= $DATABASE_URL >> .env
 
       # - run: npm ci
       # - run: npx tsc
