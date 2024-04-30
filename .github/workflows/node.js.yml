@@ -39,7 +39,7 @@ jobs:
           echo PORT = ${{ vars.PORT }} >> .env
           echo NANOID_ALPHABET_SET = ${{ secrets.NANOID_ALPHABET_SET }} >> .env
           echo NO_OF_CHARACTERS = ${{ vars.NO_OF_CHARACTERS }} >> .env
-          echo DATABASE_URL= ${{env.DATABASE_URL}} >> .env
+          echo DATABASE_URL= ${{secrets.DATABASE_URL}} >> .env
 
       - run: npm ci
       - run: npx tsc
