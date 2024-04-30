@@ -5,13 +5,12 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -20,13 +19,23 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npx tsc
-    - run: node dist/src/index.js
-    - run: jest --testTimeout=5000 --testRegex='.spec.ts$'  --detectOpenHandles
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+
+      - name: Create .env file
+        run: |
+          touch .env
+          echo HOSTNAME = ${{ vars.HOSTNAME }} >> .env
+          echo PORT = ${{ vars.PORT }} >> .env
+          echo DATABASE_URL = ${{ secrets.DATABASE_URL }} >> .env
+          echo NANOID_ALPHABET_SET = ${{ secrets.NANOID_ALPHABET_SET }} >> .env
+          echo NO_OF_CHARACTERS = ${{ vars.NO_OF_CHARACTERS }} >> .env
+
+      - run: npm ci
+      - run: npx tsc
+      - run: node dist/src/index.js
+      - run: jest --testTimeout=5000 --testRegex='.spec.ts$'  --detectOpenHandles
