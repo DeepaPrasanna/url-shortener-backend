@@ -41,7 +41,7 @@ jobs:
           echo NO_OF_CHARACTERS = ${{ vars.NO_OF_CHARACTERS }} >> .env
           echo DATABASE_URL= $DATABASE_URL >> .env
 
-      # - run: npm ci
-      # - run: npx tsc
-      # - run: node dist/src/index.js
-      # - run: jest --testTimeout=5000 --testRegex='.spec.ts$'  --detectOpenHandles
+      - run: npm ci
+      - run: npx tsc
+      - run: node dist/src/index.js
+      - run: jest --testTimeout=5000 --testRegex='.spec.ts$'  --detectOpenHandles
