@@ -9,6 +9,13 @@ on:
   pull_request:
     branches: ["main"]
 
+env:
+  DATABASE_URL: ${{secrets.DATABASE_URL}}
+  # PORT: ${{vars.PORT}}
+  # HOSTNAME: ${{vars.HOSTNAME}}
+  # NO_OF_CHARACTERS: ${{vars.NO_OF_CHARACTERS}}
+  # NANOID_ALPHABET_SET: ${{secrets.NANOID_ALPHABET_SET}}
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -27,19 +34,14 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
 
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-
-      - run: echo ${{secrets.DATABASE_URL}}
-
       - name: Create .env file
         run: |
           touch .env
-          # echo HOSTNAME = ${{ vars.HOSTNAME }} >> .env
-          # echo PORT = ${{ vars.PORT }} >> .env
-          # echo NANOID_ALPHABET_SET = ${{ secrets.NANOID_ALPHABET_SET }} >> .env
-          # echo NO_OF_CHARACTERS = ${{ vars.NO_OF_CHARACTERS }} >> .env
-          echo DATABASE_URL= ${{secrets.DATABASE_URL}} >> .env
+          # echo HOSTNAME = $HOSTNAME >> .env
+          # echo PORT = $PORT >> .env
+          # echo NANOID_ALPHABET_SET = $NANOID_ALPHABET_SET >> .env
+          # echo NO_OF_CHARACTERS = $vars.NO_OF_CHARACTERS >> .env
+          echo DATABASE_URL= $secrets.DATABASE_URL >> .env
 
       - run: npm ci
       - run: npx tsc
