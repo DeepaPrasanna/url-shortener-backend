@@ -10,7 +10,6 @@ on:
     branches: ["main"]
 
 env:
-  DATABASE_URL: ${{secrets.DATABASE_URL}}
   PORT: ${{vars.PORT}}
   HOSTNAME: ${{vars.HOSTNAME}}
   NO_OF_CHARACTERS: ${{vars.NO_OF_CHARACTERS}}
@@ -47,7 +46,7 @@ jobs:
           echo PORT = $PORT >> .env
           echo NANOID_ALPHABET_SET = $NANOID_ALPHABET_SET >> .env
           echo NO_OF_CHARACTERS = $vars.NO_OF_CHARACTERS >> .env
-          echo DATABASE_URL= $secrets.DATABASE_URL >> .env
+          echo DATABASE_URL= mongodb://localhost:27017/url-shortener >> .env
 
       - run: npm ci
       - run: npx tsc
