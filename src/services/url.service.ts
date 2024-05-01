@@ -4,7 +4,7 @@ import { customAlphabet } from "nanoid";
 import { Url } from "../models";
 
 export async function findUrlByLongUrl(longUrl: string) {
-  return await Url.findOne({ longUrl });
+  return await Url.findOne({ longUrl }).lean();
 }
 
 export async function createShortUrl(longUrl: string) {
@@ -30,7 +30,7 @@ async function generateCode() {
 }
 
 export async function findUrlByCode(code: string) {
-  return await Url.findOne({ code });
+  return await Url.findOne({ code }).lean();
 }
 
 export async function deleteUrlById(id: Types.ObjectId) {

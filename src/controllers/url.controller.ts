@@ -73,6 +73,6 @@ export async function deleteUrl(req: Request, res: Response) {
     return res.status(204).send({ message: "Deleted successfully" });
   else
     return res
-      .status(204)
+      .status(500)
       .send({ message: "Unsuccess! Something bad might have happened" });
 }

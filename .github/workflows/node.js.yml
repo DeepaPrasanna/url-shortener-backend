@@ -50,5 +50,5 @@ jobs:
 
       - run: npm ci
       - run: npx tsc
-      # - run: node dist/src/index.js
-      - run: jest --testTimeout=5000 --testRegex='.spec.ts$'  --detectOpenHandles
+      - run: npm run build
+      - run: npm run test
