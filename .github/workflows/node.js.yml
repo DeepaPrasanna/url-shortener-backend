@@ -11,10 +11,10 @@ on:
 
 env:
   DATABASE_URL: ${{secrets.DATABASE_URL}}
-  # PORT: ${{vars.PORT}}
-  # HOSTNAME: ${{vars.HOSTNAME}}
-  # NO_OF_CHARACTERS: ${{vars.NO_OF_CHARACTERS}}
-  # NANOID_ALPHABET_SET: ${{secrets.NANOID_ALPHABET_SET}}
+  PORT: ${{vars.PORT}}
+  HOSTNAME: ${{vars.HOSTNAME}}
+  NO_OF_CHARACTERS: ${{vars.NO_OF_CHARACTERS}}
+  NANOID_ALPHABET_SET: ${{secrets.NANOID_ALPHABET_SET}}
 
 jobs:
   build:
@@ -37,10 +37,10 @@ jobs:
       - name: Create .env file
         run: |
           touch .env
-          # echo HOSTNAME = $HOSTNAME >> .env
-          # echo PORT = $PORT >> .env
-          # echo NANOID_ALPHABET_SET = $NANOID_ALPHABET_SET >> .env
-          # echo NO_OF_CHARACTERS = $vars.NO_OF_CHARACTERS >> .env
+          echo HOSTNAME = $HOSTNAME >> .env
+          echo PORT = $PORT >> .env
+          echo NANOID_ALPHABET_SET = $NANOID_ALPHABET_SET >> .env
+          echo NO_OF_CHARACTERS = $vars.NO_OF_CHARACTERS >> .env
           echo DATABASE_URL= $secrets.DATABASE_URL >> .env
 
       - run: npm ci
