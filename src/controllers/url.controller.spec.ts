@@ -5,13 +5,14 @@ import app from "..";
 import * as urlService from "../services/url.service";
 
 describe("URL Routes", () => {
+  const BASE_URL = "teenyurl.ap-south-1.elasticbeanstalk.com/";
   afterEach(() => {
     jest.resetAllMocks();
   });
 
-  describe("POST /", () => {
+  describe("POST api/", () => {
     it("should return 400 if validation fails", async () => {
-      const response = await request(app).post("/").send({});
+      const response = await request(app).post("/api/").send({});
 
       expect(response.status).toBe(400);
       expect(response.body.errors).toBeTruthy();
@@ -19,8 +20,8 @@ describe("URL Routes", () => {
 
     it("should return 422 if the provided URL's hostname matches the configured HOSTNAME", async () => {
       const response = await request(app)
-        .post("/")
-        .send({ url: "https://teenyurl.in/test" });
+        .post("/api/")
+        .send({ url: `http://${BASE_URL}test` });
 
       expect(response.status).toBe(422);
       expect(response.body.message).toBe("Failed! Domain name not allowed");
@@ -34,12 +35,14 @@ describe("URL Routes", () => {
       });
 
       const response = await request(app)
-        .post("/")
+        .post("/api/")
         .send({ url: "https://test.com" });
 
       expect(response.status).toBe(200);
       expect(response.body.message).toBe("success");
-      expect(response.body.result).toBe("teenyurl.in/abc123");
+      expect(response.body.result).toBe(
+        `${BASE_URL}abc123`
+      );
     });
 
     it("should return 200 with the shortened URL if the URL does not exist in the database", async () => {
@@ -47,12 +50,14 @@ describe("URL Routes", () => {
       jest.spyOn(urlService, "createShortUrl").mockResolvedValueOnce("def456");
 
       const response = await request(app)
-        .post("/")
+        .post("/api/")
         .send({ url: "https://test.com" });
 
       expect(response.status).toBe(200);
       expect(response.body.message).toBe("success");
-      expect(response.body.result).toBe("teenyurl.in/def456");
+      expect(response.body.result).toBe(
+        `${BASE_URL}def456`
+      );
     });
   });
 
