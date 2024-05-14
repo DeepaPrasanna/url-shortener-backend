@@ -1,1 +1,6 @@
-export { shortenUrl, getLongUrl, deleteUrl } from "./url.controller";
+export {
+  deleteUrl,
+  shortenUrl,
+  getLongUrl,
+  healthCheck,
+} from "./url.controller";

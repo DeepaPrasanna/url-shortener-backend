@@ -76,3 +76,7 @@ export async function deleteUrl(req: Request, res: Response) {
       .status(500)
       .send({ message: "Unsuccess! Something bad might have happened" });
 }
+
+export function healthCheck(req: Request, res: Response) {
+  return res.status(200).send("ok");
+}

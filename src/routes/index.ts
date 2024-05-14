@@ -1,7 +1,7 @@
 import { body, param } from "express-validator";
 import express, { Router } from "express";
 
-import { deleteUrl, getLongUrl, shortenUrl } from "../controllers";
+import { deleteUrl, getLongUrl, shortenUrl, healthCheck } from "../controllers";
 
 const router: Router = express.Router();
 
@@ -11,9 +11,7 @@ router.post(
   shortenUrl
 );
 
-router.get("/", () => {
-  return "Health check: ok";
-});
+router.get("/", healthCheck);
 
 router.get("/:code", param("code").notEmpty().isAlphanumeric(), getLongUrl);
 
