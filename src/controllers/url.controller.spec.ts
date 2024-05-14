@@ -5,7 +5,7 @@ import app from "..";
 import * as urlService from "../services/url.service";
 
 describe("URL Routes", () => {
-  const BASE_URL = "teenyurl.ap-south-1.elasticbeanstalk.com/";
+  const BASE_URL = "api.teenyurl.in/";
   afterEach(() => {
     jest.resetAllMocks();
   });
