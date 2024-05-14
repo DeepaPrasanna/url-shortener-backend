@@ -11,6 +11,10 @@ router.post(
   shortenUrl
 );
 
+router.get("/", () => {
+  return "Health check: ok";
+});
+
 router.get("/:code", param("code").notEmpty().isAlphanumeric(), getLongUrl);
 
 router.delete("/:code", param("code").notEmpty().isAlphanumeric(), deleteUrl);
