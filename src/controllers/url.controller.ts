@@ -16,9 +16,7 @@ export async function shortenUrl(req: Request, res: Response) {
   }
   const { url } = matchedData(req);
 
-  const hostname = new URL(url).hostname;
-
-  if (hostname === process.env.HOSTNAME) {
+  if (url.includes("teenyurl.in")) {
     return res.status(422).send({ message: "Failed! Domain name not allowed" });
   }
 
