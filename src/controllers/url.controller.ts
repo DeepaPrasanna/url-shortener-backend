@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { matchedData, validationResult } from "express-validator";
 
 import {
+  getUserUrls,
   findUrlByCode,
   deleteUrlById,
   createShortUrl,
@@ -14,7 +15,9 @@ export async function shortenUrl(req: Request, res: Response) {
   if (!result.isEmpty()) {
     return res.status(400).send({ errors: result.array() });
   }
-  const { url } = matchedData(req);
+  const { url, email, ttl } = matchedData(req);
+
+  console.log({ url, email, ttl });
 
   if (url.includes("teenyurl.in")) {
     return res.status(422).send({ message: "Failed! Domain name not allowed" });
@@ -30,7 +33,7 @@ export async function shortenUrl(req: Request, res: Response) {
     });
   }
 
-  const code = await createShortUrl(url);
+  const code = await createShortUrl(url, email, ttl);
 
   return res.send({
     message: "success",
@@ -77,4 +80,16 @@ export async function deleteUrl(req: Request, res: Response) {
 
 export function healthCheck(req: Request, res: Response) {
   return res.status(200).send("ok");
+}
+
+export async function getUserHistory(req: Request, res: Response) {
+  const result = validationResult(req);
+
+  if (!result.isEmpty()) {
+    return res.status(400).send({ errors: result.array() });
+  }
+  const { email } = matchedData(req);
+
+  const data = await getUserUrls(email);
+  return res.json(data);
 }

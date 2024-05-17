@@ -3,4 +3,5 @@ export {
   shortenUrl,
   getLongUrl,
   healthCheck,
+  getUserHistory,
 } from "./url.controller";

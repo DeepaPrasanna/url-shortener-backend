@@ -1,4 +1,5 @@
 export {
+  getUserUrls,
   findUrlByCode,
   deleteUrlById,
   createShortUrl,
