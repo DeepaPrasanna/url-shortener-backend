@@ -17,8 +17,6 @@ export async function shortenUrl(req: Request, res: Response) {
   }
   const { url, email, ttl } = matchedData(req);
 
-  console.log({ url, email, ttl });
-
   if (url.includes("teenyurl.in")) {
     return res.status(422).send({ message: "Failed! Domain name not allowed" });
   }
