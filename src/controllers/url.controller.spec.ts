@@ -32,6 +32,7 @@ describe("URL Routes", () => {
         _id: new mongoose.Types.ObjectId(),
         code: "abc123",
         longUrl: "https://example.com",
+        createdOn: new Date(),
       });
 
       const response = await request(app)
@@ -40,9 +41,7 @@ describe("URL Routes", () => {
 
       expect(response.status).toBe(200);
       expect(response.body.message).toBe("success");
-      expect(response.body.result).toBe(
-        `${BASE_URL}abc123`
-      );
+      expect(response.body.result).toBe(`${BASE_URL}abc123`);
     });
 
     it("should return 200 with the shortened URL if the URL does not exist in the database", async () => {
@@ -55,9 +54,7 @@ describe("URL Routes", () => {
 
       expect(response.status).toBe(200);
       expect(response.body.message).toBe("success");
-      expect(response.body.result).toBe(
-        `${BASE_URL}def456`
-      );
+      expect(response.body.result).toBe(`${BASE_URL}def456`);
     });
   });
 
@@ -85,6 +82,7 @@ describe("URL Routes", () => {
         _id: new mongoose.Types.ObjectId(),
         code: "abc123",
         longUrl: "https://example.com",
+        createdOn: new Date(),
       });
 
       const response = await request(app).get("/someCode");
@@ -119,6 +117,7 @@ describe("URL Routes", () => {
         _id: new mongoose.Types.ObjectId(),
         code: "abc123",
         longUrl: "https://example.com",
+        createdOn: new Date(),
       });
 
       jest
@@ -136,6 +135,7 @@ describe("URL Routes", () => {
         _id: new mongoose.Types.ObjectId(),
         code: "abc123",
         longUrl: "https://example.com",
+        createdOn: new Date(),
       });
 
       jest
@@ -145,6 +145,55 @@ describe("URL Routes", () => {
       const response = await request(app).delete("/abc123");
 
       expect(response.status).toBe(500);
+    });
+  });
+
+  describe("GET /history", () => {
+    it("should return 400 if validation fails", async () => {
+      const response = await request(app).get("/history");
+
+      expect(response.status).toBe(400);
+      expect(response.body.errors).toBeTruthy();
+    });
+
+    it("should return [] if email is not found", async () => {
+      jest.spyOn(urlService, "getUserUrls").mockResolvedValueOnce([]);
+
+      const response = await request(app).get("/history?email=test@test.com");
+
+      expect(response.status).toBe(200);
+      expect(response.body).toStrictEqual([]);
+    });
+
+    it("should return 200 with all the URLs if email exists", async () => {
+      const allURLs = [
+        {
+          _id: new mongoose.Types.ObjectId("66484a548809e52645b49dbd"),
+          code: "abc123",
+          longUrl: "https://example.com",
+          createdOn: new Date("2024-05-18T06:27:32.967Z"),
+          email: "test@test.com",
+        },
+        {
+          _id: new mongoose.Types.ObjectId("66484a548809e52645b49dbe"),
+          code: "abc456",
+          longUrl: "https://test.com",
+          createdOn: new Date("2024-05-18T06:27:32.967Z"),
+          email: "test@test.com",
+        },
+      ];
+      // Convert dates to ISO strings for comparison
+      const expectedURLs = allURLs.map((url) => ({
+        ...url,
+        _id: url._id.toString(),
+        createdOn: url.createdOn.toISOString(),
+      }));
+      jest.spyOn(urlService, "getUserUrls").mockResolvedValueOnce(allURLs);
+
+      const response = await request(app).get("/history?email=test@test.com");
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual(expectedURLs);
     });
   });
 });
